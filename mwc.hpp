@@ -10,25 +10,20 @@ namespace MC {
 
 class file_loader {
    public:
-      file_loader(const char *f);
       virtual ~file_loader() = 0;
-      
-      virtual const std::string& content(const char *f) = 0;
+      virtual void content(const std::string &fn, std::string &content) = 0;
 };
 
 /* production file_loader */
 class real_file_loader: public file_loader {
    public:
-      const std::string& content(const char *f);
-   
-   private:
-      std::string file_content;
+      void content(const std::string &fn, std::string &content);
 };
 
 /* mock file_loader for UT */
 class mock_file_loader: public file_loader {
    public:
-      MOCK_CONST_METHOD1(content, const std::string&(const char *));
+      MOCK_CONST_METHOD2(content, void (const std::string &, std::string &));
 };
 
 /* mwc, our CUT, have some dependency needed to be broken by abstraction tricks */
@@ -36,31 +31,21 @@ template <typename FL = real_file_loader>
 class mwc {
    protected:
       std::tr1::shared_ptr<FL> 
-      creat_fl(const std::string &fn)
-      {
-         if (fn == std::string()) {
-            return (new FL);
-         }
-
-         return 0;
-      }
+      creat_fl() { return (new FL); }
 
    public:
-      mwc() {}
-      mwc(const char *fn)
-      {
-         fl = create_fl(fn);
-      }
+      mwc() { fl = mwc::create_fl(); }
 
-      void load(const char *fn)
+      void load(const char *fn) 
       {
-         //fl = create_fl(fn);
+         fl->content(fn, content);
       }
 
       uint32_t query(const char *w);
 
    private:
-      std::tr1::shared_ptr<file_loader> fl;
+      std::tr1::shared_ptr<FL> fl;
+      std::string content;
 };
 
 } //end of ns MC
