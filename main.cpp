@@ -2,10 +2,10 @@
 
 int main(int argc, char **argv)
 {
-	//MC::mwc<MC::product_mwc_dep> wc;
-	MC::mwc<> wc;
+   //MC::mwc<MC::product_mwc_dep> wc;
+   MC::mwc<> wc;
 
-	wc.load("./data");
+   wc.load("./data");
 
-    return 0;
+   return 0;
 }

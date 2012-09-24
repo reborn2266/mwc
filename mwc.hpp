@@ -55,8 +55,44 @@ namespace MC {
          product_ini_mgr(): min_word_length_(0), enable_case_sensitive_(false) {}
          void open(const char *ini_file)
          {
-
+            std::ifstream ifs(ini_file);
+            char buf[256];
+            
+            while (ifs.good()) {
+               ifs.getline(buf, 256);
+               if (ifs.good()) {
+                  std::stringstream ss(buf);
+                  std::string attr;
+                  std::string tmp;
+                  ss >> attr;
+                  ss >> tmp;
+                  if (attr == "min_word_length") {
+                     ss >> min_word_length_;
+                  } else if (attr == "exclude_words") {
+                     do {
+                        std::string w;
+                        ss >> w;
+                        if (w[w.length() - 1] == ',') {
+                           w[w.length() - 1] = '\0';
+                           exclude_words_.insert(w);
+                        } else {
+                           exclude_words_.insert(w);
+                           break;
+                        }
+                     } while(true);
+                  } else if (attr == "enable_case_sensitive") {
+                     std::string w;
+                     ss >> w;
+                     if (w == "True") {
+                        enable_case_sensitive_ = true;
+                     } else {
+                        enable_case_sensitive_ = false;
+                     }
+                  }
+               }
+            }
          }
+
          uint32_t min_word_length() const { return min_word_length_; }
          const std::set<std::string> &exclude_words() const { return exclude_words_; }
          bool enable_case_sensitive() const { return enable_case_sensitive_; }
