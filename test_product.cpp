@@ -1,6 +1,7 @@
 #include <iostream>
 #include <tr1/memory>
 #include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/TestAssert.h>
 
 #include "mwc.hpp"
 
@@ -24,5 +25,5 @@ void ProductMWCTester::MWC_QueryValidWord_ReturnCount()
 
    wc.load("./data");
 
-   CPPUNIT_ASSERT(2 == wc.query("ooooo"));
+   CPPUNIT_ASSERT_EQUAL(2, wc.query("ooooo"));
 }
