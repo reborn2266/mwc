@@ -57,7 +57,7 @@ namespace MC {
          {
             std::ifstream ifs(ini_file);
             char buf[256];
-            
+
             while (ifs.good()) {
                ifs.getline(buf, 256);
                if (ifs.good()) {
@@ -167,7 +167,7 @@ namespace MC {
                /* a valid str, add its count */
                wc[str] += 1;
             } while(!ss.eof());
-#if 1
+#if 0
             for(std::map<std::string, uint32_t>::iterator iter = wc.begin();
                   iter != wc.end(); ++iter) {
                std::cout << iter->first << " " << iter->second << std::endl;
