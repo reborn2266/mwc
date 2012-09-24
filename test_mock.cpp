@@ -8,12 +8,16 @@ class MockMWCTester: public CppUnit::TestFixture
 {
    CPPUNIT_TEST_SUITE(MockMWCTester);
    CPPUNIT_TEST(MWC_QueryValidWord_ReturnCount);
+   CPPUNIT_TEST(MWC_QueryTooShortValidWord_ReturnCount);
+   CPPUNIT_TEST(MWC_QueryExcludeWord_ReturnCount);
    CPPUNIT_TEST_SUITE_END();
 public:
    MockMWCTester() {}
    void setUp() {}
    void tearDown() {}
    void MWC_QueryValidWord_ReturnCount();
+   void MWC_QueryTooShortValidWord_ReturnCount();
+   void MWC_QueryExcludeWord_ReturnCount();
 };
 
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MockMWCTester, "alltest");
@@ -52,4 +56,24 @@ void MockMWCTester::MWC_QueryValidWord_ReturnCount()
    wc.load("./data");
 
    CPPUNIT_ASSERT(2 == wc.query("ooooo"));
+}
+
+void MockMWCTester::MWC_QueryTooShortValidWord_ReturnCount()
+{
+   typedef MC::mwc_dep<mock_file_loader0, mock_ini_mgr0> mock_mwc_dep;
+   MC::mwc<mock_mwc_dep> wc;
+
+   wc.load("./data");
+
+   CPPUNIT_ASSERT_EQUAL(0, wc.query("I"));
+}
+
+void MockMWCTester::MWC_QueryExcludeWord_ReturnCount()
+{
+   typedef MC::mwc_dep<mock_file_loader0, mock_ini_mgr0> mock_mwc_dep;
+   MC::mwc<mock_mwc_dep> wc;
+
+   wc.load("./data");
+
+   CPPUNIT_ASSERT_EQUAL(0, wc.query("There"));
 }
