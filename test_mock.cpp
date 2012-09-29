@@ -55,7 +55,7 @@ void MockMWCTester::MWC_QueryValidWord_ReturnCount()
    MC::mwc<mock_mwc_dep> wc;
    wc.load("./data");
 
-   CPPUNIT_ASSERT(2 == wc.query("ooooo"));
+   CPPUNIT_ASSERT_EQUAL(2, wc.query("ooooo"));
 }
 
 void MockMWCTester::MWC_QueryTooShortValidWord_ReturnCount()
